@@ -1,0 +1,7 @@
+.vscode/
+pointsmap.egg-info/
+_skbuild/
+__pycache__/
+dist/
+*.pcd
+*.hdf5
