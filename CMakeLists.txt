@@ -22,7 +22,7 @@ include_directories(${PYTHON3_INCLUDE_DIRS})
 find_package(PythonExtensions REQUIRED)
 
 ##  Boost includes
-find_package(Boost COMPONENTS python3* numpy3* REQUIRED)
+find_package(Boost COMPONENTS python3 numpy3 REQUIRED)
 
 ##  OpenCV
 find_package(OpenCV REQUIRED)
