@@ -37,7 +37,7 @@ add_definitions(${PCL_DEFINITIONS})
 
 ##  Build
 include_directories(include)
-add_library(pointsmap SHARED src/common.cpp src/base/intrinsic_base.cpp src/base/depth_base.cpp src/base/points_base.cpp src/voxelgridmap.cpp src/points.cpp src/python_wrapper.cpp)
+add_library(pointsmap SHARED src/common.cpp src/base/intrinsic_base.cpp src/base/depth_base.cpp src/base/points_base.cpp src/depth.cpp src/voxelgridmap.cpp src/points.cpp src/python_wrapper.cpp)
 
 target_link_libraries(pointsmap boost_numpy3 boost_python3 ${PCL_LIBRARIES} ${OpenCV_LIBS})
 

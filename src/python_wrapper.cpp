@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "voxelgridmap.hpp"
 #include "points.hpp"
+#include "depth.hpp"
 
 namespace pointsmap {
 
@@ -29,6 +30,8 @@ BOOST_PYTHON_MODULE(libpointsmap)
         //  Methods
         .def("set_depth_range", &DepthBase::set_depth_range_python)
         .def("get_depth_range", &DepthBase::get_depth_range_python)
+        .def("set_base_line", &DepthBase::set_base_line_python)
+        .def("get_base_line", &DepthBase::get_base_line_python)
     ;
 
     py::class_<PointsBase, py::bases<DepthBase>, boost::shared_ptr<PointsBase> >("pointsbase", py::no_init)
@@ -41,6 +44,13 @@ BOOST_PYTHON_MODULE(libpointsmap)
         .def("set_semanticpoints", &PointsBase::set_semanticpoints_from_numpy)
         .def("get_points", &PointsBase::get_points_python)
         .def("get_semanticpoints", &PointsBase::get_semanticpoints_python)
+    ;
+
+    py::class_<Depth, py::bases<DepthBase>, boost::shared_ptr<Depth> >("depth", py::no_init)
+        //  Methods
+        .def("set_depthmap", &Depth::set_depthmap)
+        .def("set_disparity", &Depth::set_disparity)
+        .def("get_depthmap", &Depth::get_depthmap)
     ;
 
     py::class_<VoxelGridMap, py::bases<PointsBase>, boost::shared_ptr<VoxelGridMap> >("voxelgridmap", py::no_init)

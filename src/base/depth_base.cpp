@@ -43,6 +43,30 @@ py::tuple DepthBase::get_depth_range_python()
     return py::make_tuple(this->_depth_min, this->_depth_max);
 }
 
+//  ステレオカメラのカメラ間距離を設定する
+void DepthBase::set_base_line(const float_t base_line)
+{
+    this->_base_line = base_line;
+}
+
+//  ステレオカメラのカメラ間距離を設定する (for Python)
+void DepthBase::set_base_line_python(const double_t base_line)
+{
+    this->set_base_line(static_cast<float_t>(base_line));
+}
+
+//  設定したステレオカメラのカメラ間距離を取得する
+float_t DepthBase::get_base_line()
+{
+    return this->_base_line;
+}
+
+//  設定したステレオカメラのカメラ間距離を取得する (for Python)
+double_t DepthBase::get_base_line_python()
+{
+    return static_cast<double_t>(this->get_base_line());
+}
+
 //  点群から深度マップを生成する
 void DepthBase::create_depthmap(const pcl::PointCloud<pcl::PointXYZL> &src, cv::Mat &dst)
 {
@@ -231,7 +255,7 @@ void DepthBase::create_points_from_depthmap(const cv::Mat &depthmap, pcl::PointC
         for (int x = 0; x < this->_width; x++) {
             float_t *depth_tmp_px = &(depth_tmp_ptr[x]);
 
-            if (std::isinf(*depth_tmp_px) == true || std::isnan(*depth_tmp_px) == true || 
+            if (std::isinf(*depth_tmp_px) == true || std::isnan(*depth_tmp_px) == true ||
                 *depth_tmp_px < this->_depth_min || this->_depth_max < *depth_tmp_px) {
                 #ifdef _OPENMP
                     #pragma omp critical
@@ -288,7 +312,7 @@ void DepthBase::create_points_from_depthmap_semantic2d(const cv::Mat &depthmap, 
         for (int x = 0; x < this->_width; x++) {
             float_t *depth_tmp_px = &(depth_tmp_ptr[x]);
 
-            if (std::isinf(*depth_tmp_px) == true || std::isnan(*depth_tmp_px) == true || 
+            if (std::isinf(*depth_tmp_px) == true || std::isnan(*depth_tmp_px) == true ||
                 *depth_tmp_px < this->_depth_min || this->_depth_max < *depth_tmp_px) {
                 #ifdef _OPENMP
                     #pragma omp critical
@@ -468,6 +492,36 @@ void DepthBase::semantic2d_visibility_filter(const cv::Mat &src_depth, cv::Mat &
 
             if (std::accumulate(max_corn_angles.begin(), max_corn_angles.end(), 0.0f) >= threshold) {
                 target_semantic2d.ptr<u_int8_t>(y)[x] = 0u;
+            }
+        }
+    }
+}
+
+//  Disparityから深度マップを生成する
+void DepthBase::create_stereodepth(const cv::Mat& disparity, cv::Mat& dst)
+{
+    if (disparity.type() != CV_32FC1) throw std::runtime_error("disparity.type() != CV_32FC1");
+
+    if (this->_fx == NAN) throw std::runtime_error("Fx must not be nan.");
+    if (this->_fy == NAN) throw std::runtime_error("Fy must not be nan.");
+    if (this->_base_line == NAN) throw std::runtime_error("\"base_line\" must not be nan.");
+
+    if (this->_width != disparity.cols) throw std::runtime_error("this->_width != disparity.cols");
+    if (this->_height != disparity.rows) throw std::runtime_error("this->_height != disparity.rows");
+
+    float_t focal_length = (this->_fx + this->_fy) * 0.5f;
+
+    dst = cv::Mat(this->_height, this->_width, CV_32FC1, cv::Scalar_<float_t>(INFINITY));
+
+    for (size_t y = 0ul; y < this->_height; y++) {
+        const float_t *disparity_ptr = disparity.ptr<float_t>(y);
+        float_t *dst_ptr = dst.ptr<float_t>(y);
+
+        for (size_t x = 0ul; x < this->_width; x++) {
+            float_t depth = this->_base_line * focal_length / disparity_ptr[x];
+
+            if ((this->_depth_min <= depth) && (depth <= this->_depth_max)) {
+                dst_ptr[x] = depth;
             }
         }
     }

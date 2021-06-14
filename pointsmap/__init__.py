@@ -3,7 +3,7 @@
 from enum import IntEnum
 from typing import List, Tuple, Union
 import numpy as np
-from pointsmap.libpointsmap import invert_transform, matrix_to_quaternion, quaternion_to_matrix, depth_to_colormap, combine_transforms, voxelgridmap, points
+from pointsmap.libpointsmap import invert_transform, matrix_to_quaternion, quaternion_to_matrix, depth_to_colormap, combine_transforms, voxelgridmap, points, depth
 
 
 def invertTransform(translation: np.ndarray = None, quaternion: np.ndarray = None, matrix_4x4: np.ndarray = None) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
@@ -104,6 +104,106 @@ def combineTransforms(translations: List[np.ndarray] = None, quaternions: List[n
   else:
     raise AssertionError('Set the values for "transforms" and "quaternions" or "matrixs".')
 
+class Depth():
+  """Depth
+
+  Class for handling depth map.
+  """
+  def __init__(self) -> None:
+    """__init__
+    """
+    self.instance = depth()
+
+  def set_intrinsic(self, K: np.ndarray) -> None:
+    """set_intrinsic
+
+    Load the intrinsic parameters of the camera.
+
+    Args:
+        K (np.ndarray): Numpy(3, 3) matrix containing the camera intrinsic parameters.
+    """
+    self.instance.set_intrinsic(K)
+
+  def get_intrinsic(self) -> np.ndarray:
+    """get_intrinsic
+
+    Get the intrinsic parameters of the camera.
+
+    Returns:
+        np.ndarray: Numpy(3, 3) matrix containing the camera intrinsic parameters.
+    """
+    return self.instance.get_intrinsic()
+
+  def set_shape(self, shape: Tuple[int, ...]) -> None:
+    """set_shape
+
+    Set the output image size.
+
+    Args:
+        shape (tuple): image size (H, W)
+    """
+    self.instance.set_shape(shape)
+
+  def get_shape(self) -> Tuple[int, int]:
+    """get_shape
+
+    Get the output image size.
+
+    Returns:
+        tuple: image size (H, W)
+    """
+    return self.instance.get_shape()
+
+  def set_depth_range(self, depth_range: Tuple[float, float]) -> None:
+    """set_depth_range
+
+    Set the display range of the depth map.
+
+    Args:
+        depth_range (tuple): display range of the depth map (MIN, MAX)
+    """
+    self.instance.set_depth_range(depth_range)
+
+  def get_depth_range(self) -> Tuple[float, float]:
+    """get_depth_range
+
+    Get the display range of the depth map.
+
+    Returns:
+        tuple: display range of the depth map (MIN, MAX)
+    """
+    return self.instance.get_depth_range()
+
+  def set_depthmap(self, depthmap: np.ndarray) -> None:
+    """set_depthmap
+
+    Set a depth map.
+
+    Args:
+        depthmap (np.ndarray): Depth map.
+    """
+    self.instance.set_depthmap(depthmap)
+
+  def set_disparity(self, disparity: np.ndarray) -> None:
+    """set_disparity
+
+    Set a disparity map.
+
+    Args:
+        disparity (np.ndarray): Disparity map.
+    """
+    self.instance.set_disparity(disparity)
+
+  def get_depthmap(self) -> np.ndarray:
+    """get_depthmap
+
+    Get a depth map.
+
+    Returns:
+        np.ndarray: Depth map.
+    """
+    self.instance.get_depthmap()
+
 class Points():
   """Points
 
@@ -119,7 +219,7 @@ class Points():
         quiet (bool, optional): If `True`, do not display messages other than "ERROR" and "WARNING" on the console. Defaults to False.
     """
     self.instance = points(quiet)
-  
+
   def set_points(self, obj: Union[str, List[str], np.ndarray]) -> None:
     """set_points
 
@@ -131,7 +231,7 @@ class Points():
             (np.ndarray): a Numpy(N, 3) matrix containing the 3D points cloud.
     """
     self.instance.set_points(obj)
-  
+
   def set_semanticpoints(self, points: np.ndarray, semantic1d: np.ndarray) -> None:
     """set_semanticpoints
 
@@ -142,7 +242,7 @@ class Points():
         semantic1d (np.ndarray): a Numpy(N,) matrix containing the labels that make up the labeled 3D points cloud.
     """
     self.instance.set_semanticpoints(points, semantic1d)
-  
+
   def add_points(self, obj: Union[str, List[str], np.ndarray]) -> None:
     """add_points
 
@@ -154,7 +254,7 @@ class Points():
             (np.ndarray): a Numpy(N, 3) matrix containing the 3D points cloud.
     """
     self.instance.add_points(obj)
-  
+
   def add_semanticpoints(self, points: np.ndarray, semantic1d: np.ndarray) -> None:
     """add_semanticpoints
 
@@ -165,7 +265,7 @@ class Points():
         semantic1d (np.ndarray): a Numpy(N,) matrix containing the labels that make up the labeled 3D points cloud.
     """
     self.instance.add_semanticpoints(points, semantic1d)
-  
+
   def get_points(self) -> np.ndarray:
     """get_points
 
@@ -195,7 +295,7 @@ class Points():
         K (np.ndarray): Numpy(3, 3) matrix containing the camera intrinsic parameters.
     """
     self.instance.set_intrinsic(K)
-  
+
   def get_intrinsic(self) -> np.ndarray:
     """get_intrinsic
 
@@ -205,7 +305,7 @@ class Points():
         np.ndarray: Numpy(3, 3) matrix containing the camera intrinsic parameters.
     """
     return self.instance.get_intrinsic()
-  
+
   def set_shape(self, shape: Tuple[int, ...]) -> None:
     """set_shape
 
@@ -215,7 +315,7 @@ class Points():
         shape (tuple): image size (H, W)
     """
     self.instance.set_shape(shape)
-  
+
   def get_shape(self) -> Tuple[int, int]:
     """get_shape
 
@@ -225,7 +325,7 @@ class Points():
         tuple: image size (H, W)
     """
     return self.instance.get_shape()
-  
+
   def set_depth_range(self, depth_range: Tuple[float, float]) -> None:
     """set_depth_range
 
@@ -235,7 +335,7 @@ class Points():
         depth_range (tuple): display range of the depth map (MIN, MAX)
     """
     self.instance.set_depth_range(depth_range)
-  
+
   def get_depth_range(self) -> Tuple[float, float]:
     """get_depth_range
 
@@ -308,7 +408,7 @@ class Points():
       self.instance.transform(matrix_4x4)
     else:
       raise AssertionError('Set the values for "translation" and "quaternion" or "matrix_4x4".')
-  
+
   def downsampling(self, leaf_size:float) -> None:
     """downsampling
 
@@ -349,7 +449,7 @@ class Points():
       return self.instance.create_depthmap(matrix_4x4, filter_radius, filter_threshold)
     else:
       raise AssertionError('Set the values for "translation" and "quaternion" or "matrix_4x4".')
-  
+
   def create_semantic2d(self, translation: np.ndarray = None, quaternion: np.ndarray = None, matrix_4x4: np.ndarray = None,
                         filter_radius: int = 0, filter_threshold: float = 3.0) -> np.ndarray:
     """create_semantic2d
@@ -395,7 +495,7 @@ class VoxelGridMap():
         quiet (bool, optional): If `True`, do not display messages other than "ERROR" and "WARNING" on the console. Defaults to False.
     """
     self.instance = voxelgridmap(quiet)
-  
+
   def set_pointsmap(self, obj: Union[str, List[str], np.ndarray], voxel_size: float = 10.0) -> None:
     """set_pointsmap
 
@@ -420,7 +520,7 @@ class VoxelGridMap():
         voxel_size (float, optional): size of voxels [m] (default: 10.0)
     """
     self.instance.set_semanticmap(points, semantic1d, voxel_size)
-  
+
   def set_voxelgridmap(self, vgm:np.ndarray, voxel_size:float, voxels_min:Tuple[float, float, float], voxels_max:Tuple[float, float, float], voxels_center:Tuple[float, float, float], voxels_origin:Tuple[int, int, int]) -> None:
     """set_voxelgridmap
 
@@ -435,7 +535,7 @@ class VoxelGridMap():
         voxels_origin (Tuple[int, int, int]): Indexes of the center Voxel in the VoxelGridMap(z_origin, y_origin, x_origin)
     """
     self.instance.set_voxelgridmap(vgm, voxel_size, voxels_min, voxels_max, voxels_center, voxels_origin)
-  
+
   def set_empty_voxelgridmap(self, voxels_len:Tuple[int, int, int], voxel_size:float, voxels_min:Tuple[float, float, float], voxels_max:Tuple[float, float, float], voxels_center:Tuple[float, float, float], voxels_origin:Tuple[int, int, int]) -> None:
     """set_empty_voxelgridmap
 
@@ -460,7 +560,7 @@ class VoxelGridMap():
         np.ndarray: Obtained 3D points cloud map (Numpy(N, 3) matrix, 'points' type)
     """
     return self.instance.get_pointsmap()
-  
+
   def get_semanticmap(self) -> Tuple[np.ndarray, np.ndarray]:
     """get_semanticmap
 
@@ -470,7 +570,7 @@ class VoxelGridMap():
         Tuple[np.ndarray, np.ndarray]: Tuple of points (Numpy(N, 3) matrix, 'points' type) and labels (Numpy(N,) matrix, 'semantic1d' type) constituting a labeled 3D points cloud map.
     """
     return self.instance.get_semanticmap()
-  
+
   def get_voxel_points(self) -> np.ndarray:
     """get_voxel_points
 
@@ -500,7 +600,7 @@ class VoxelGridMap():
         float: the size of the voxels [m].
     """
     return self.instance.get_voxel_size()
-  
+
   def get_voxels_min(self) -> Tuple[float, float, float]:
     """get_voxels_min
 
@@ -510,7 +610,7 @@ class VoxelGridMap():
         Tuple[float, float, float]: the minimum values of range for VoxelGridMap (z_min, y_min, x_min).
     """
     return self.instance.get_voxels_min()
-  
+
   def get_voxels_max(self) -> Tuple[float, float, float]:
     """get_voxels_max
 
@@ -530,7 +630,7 @@ class VoxelGridMap():
         Tuple[float, float, float]: the center coordinates of VoxelGridMap (z_center, y_center, x_center).
     """
     return self.instance.get_voxels_center()
-  
+
   def get_voxels_origin(self) -> Tuple[int, int, int]:
     """get_voxels_origin
 
@@ -540,7 +640,7 @@ class VoxelGridMap():
         Tuple[int, int, int]: the indexes of the center voxel in the VoxelGridMap (z_origin, y_origin, x_origin)
     """
     return self.instance.get_voxels_origin()
-  
+
   def get_voxels_include_frustum(self, translation: np.ndarray = None, quaternion: np.ndarray = None, matrix_4x4: np.ndarray = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """get_voxels_include_frustum
 
@@ -575,7 +675,7 @@ class VoxelGridMap():
         K (np.ndarray): Numpy(3, 3) matrix containing the camera intrinsic parameters.
     """
     self.instance.set_intrinsic(K)
-  
+
   def get_intrinsic(self) -> np.ndarray:
     """get_intrinsic
 
@@ -585,7 +685,7 @@ class VoxelGridMap():
         np.ndarray: Numpy(3, 3) matrix containing the camera intrinsic parameters.
     """
     return self.instance.get_intrinsic()
-  
+
   def set_shape(self, shape: Tuple[int, ...]) -> None:
     """set_shape
 
@@ -595,7 +695,7 @@ class VoxelGridMap():
         shape (tuple): image size (H, W)
     """
     self.instance.set_shape(shape)
-  
+
   def get_shape(self) -> Tuple[int, int]:
     """get_shape
 
@@ -605,7 +705,7 @@ class VoxelGridMap():
         tuple: image size (H, W)
     """
     return self.instance.get_shape()
-  
+
   def set_depth_range(self, depth_range: Tuple[float, float]) -> None:
     """set_depth_range
 
@@ -615,7 +715,7 @@ class VoxelGridMap():
         depth_range (tuple): display range of the depth map (MIN, MAX)
     """
     self.instance.set_depth_range(depth_range)
-  
+
   def get_depth_range(self) -> Tuple[float, float]:
     """get_depth_range
 
@@ -654,8 +754,8 @@ class VoxelGridMap():
       return self.instance.create_depthmap(matrix_4x4, filter_radius, filter_threshold)
     else:
       raise AssertionError('Set the values for "translation" and "quaternion" or "matrix_4x4".')
-  
-  def create_semantic2d(self, translation: np.ndarray = None, quaternion: np.ndarray = None, matrix_4x4: np.ndarray = None, 
+
+  def create_semantic2d(self, translation: np.ndarray = None, quaternion: np.ndarray = None, matrix_4x4: np.ndarray = None,
                         filter_radius: int = 0, filter_threshold: float = 3.0) -> np.ndarray:
     """create_semantic2d
 
@@ -683,7 +783,7 @@ class VoxelGridMap():
       return self.instance.create_semantic2d(matrix_4x4, filter_radius, filter_threshold)
     else:
       raise AssertionError('Set the values for "translation" and "quaternion" or "matrix_4x4".')
-  
+
   def set_voxels(self, indexs: Tuple[np.ndarray, np.ndarray, np.ndarray], voxels: np.ndarray) -> None:
     """set_voxels
 

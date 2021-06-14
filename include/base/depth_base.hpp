@@ -17,18 +17,27 @@ class DepthBase : public IntrinsicBase
 
         //  出力する深度の範囲を設定する
         void set_depth_range(const float_t min, const float_t max);
-        //  出力する深度の範囲を設定する
+        //  出力する深度の範囲を設定する (for Python)
         void set_depth_range_python(const py::tuple &depth_range);
         //  設定した深度の範囲を取得する
         Eigen::Vector2f get_depth_range();
-        //  設定した深度の範囲を取得する
+        //  設定した深度の範囲を取得する (for Python)
         py::tuple get_depth_range_python();
+        //  ステレオカメラのカメラ間距離を設定する
+        void set_base_line(const float_t base_line);
+        //  ステレオカメラのカメラ間距離を設定する (for Python)
+        void set_base_line_python(const double_t base_line);
+        //  設定したステレオカメラのカメラ間距離を取得する
+        float_t get_base_line();
+        //  設定したステレオカメラのカメラ間距離を取得する (for Python)
+        double_t get_base_line_python();
 
     protected:
         //  Properties
-        
+
         float_t _depth_max = INFINITY;  //  描画する深度の最大値
         float_t _depth_min = 0.0f;      //  描画する深度の最小値
+        float_t _base_line = 0.0f;      //  ステレオカメラのカメラ間距離
 
         //  Methods
 
@@ -46,6 +55,8 @@ class DepthBase : public IntrinsicBase
         void depth_visibility_filter(const cv::Mat &src, cv::Mat &dst, const float_t threshold = 3.0f, const int radius = 5);
         //  本来見えない位置にある点をSemantic2Dから除去する
         void semantic2d_visibility_filter(const cv::Mat &src_depth, cv::Mat &target_semantic2d, const float_t threshold = 3.0f, const int radius = 5);
+        //  Disparityから深度マップを生成する
+        void create_stereodepth(const cv::Mat& disparity, cv::Mat& dst);
 
 };
 
