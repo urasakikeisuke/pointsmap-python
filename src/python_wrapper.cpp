@@ -46,7 +46,7 @@ BOOST_PYTHON_MODULE(libpointsmap)
         .def("get_semanticpoints", &PointsBase::get_semanticpoints_python)
     ;
 
-    py::class_<Depth, py::bases<DepthBase>, boost::shared_ptr<Depth> >("depth", py::no_init)
+    py::class_<Depth, py::bases<DepthBase>, boost::shared_ptr<Depth> >("depth")
         //  Methods
         .def("set_base_line", &Depth::set_base_line_python)
         .def("get_base_line", &Depth::get_base_line_python)
