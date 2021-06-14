@@ -48,6 +48,8 @@ BOOST_PYTHON_MODULE(libpointsmap)
 
     py::class_<Depth, py::bases<DepthBase>, boost::shared_ptr<Depth> >("depth", py::no_init)
         //  Methods
+        .def("set_base_line", &Depth::set_base_line_python)
+        .def("get_base_line", &Depth::get_base_line_python)
         .def("set_depthmap", &Depth::set_depthmap)
         .def("set_disparity", &Depth::set_disparity)
         .def("get_depthmap", &Depth::get_depthmap)

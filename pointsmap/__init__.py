@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from enum import IntEnum
 from typing import List, Tuple, Union
 import numpy as np
 from pointsmap.libpointsmap import invert_transform, matrix_to_quaternion, quaternion_to_matrix, depth_to_colormap, combine_transforms, voxelgridmap, points, depth
@@ -174,6 +173,26 @@ class Depth():
     """
     return self.instance.get_depth_range()
 
+  def set_base_line(self, base_line: float) -> None:
+    """set_base_line
+
+    Set the baseline of the stereo camera.
+
+    Args:
+        base_line (float): baseline
+    """
+    self.instance.set_base_line(base_line)
+
+  def get_base_line(self) -> float:
+    """get_base_line
+
+    Get the baseline of the stereo camera.
+
+    Returns:
+        float: baseline
+    """
+    return self.instance.get_base_line()
+
   def set_depthmap(self, depthmap: np.ndarray) -> None:
     """set_depthmap
 
@@ -202,7 +221,7 @@ class Depth():
     Returns:
         np.ndarray: Depth map.
     """
-    self.instance.get_depthmap()
+    return self.instance.get_depthmap()
 
 class Points():
   """Points
