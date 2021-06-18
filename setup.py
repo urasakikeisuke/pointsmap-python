@@ -1,5 +1,7 @@
-from skbuild import setup
-from skbuild.command.build_ext import build_ext
+# from skbuild import setup
+# from skbuild.command.build_ext import build_ext
+from setuptools import setup
+from pybind11.setup_helpers import Pybind11Extension
 
 setup(
     name='pointsmap',
@@ -11,4 +13,10 @@ setup(
     url='https://github.com/shikishima-TasakiLab',
     license='',
     packages=['pointsmap'],
+    ext_modules=[
+        Pybind11Extension(
+            "pointsmap",
+            []
+        )
+    ]
 )

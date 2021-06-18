@@ -10,9 +10,9 @@ RUN apt-get update && \
         git \
         cmake \
         python3-dev \
-        libopencv-dev \
-        python3-opencv \
-        python3-h5py \
+        # libopencv-dev \
+        # python3-opencv \
+        # python3-h5py \
         libpcl-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -28,7 +28,8 @@ RUN apt-get update && \
     apt-get install -y \
         python3-pip && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip3 install scikit-build cmake ninja twine
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install scikit-build cmake ninja twine
 
 WORKDIR /workspace

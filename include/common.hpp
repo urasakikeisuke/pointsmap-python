@@ -1,7 +1,8 @@
 #include <string>
 
-#include <boost/python/numpy.hpp>
-#include <numpy/ndarrayobject.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+
 #include <opencv2/opencv.hpp>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -15,8 +16,7 @@
 #include <omp.h>
 #endif
 
-namespace np = boost::python::numpy;
-namespace py = boost::python;
+namespace py = pybind11;
 
 namespace pointsmap {
 
@@ -26,6 +26,14 @@ namespace pointsmap {
 
 #define FILTER_RADIUS 0
 #define FILTER_THRESHOLD 3.0f
+
+#define NP_UINT8    py::dtype::of<u_int8_t>()
+#define NP_INT8     py::dtype::of<int8_t>()
+#define NP_UINT16   py::dtype::of<u_int16_t>()
+#define NP_INT16    py::dtype::of<int16_t>()
+#define NP_INT32    py::dtype::of<int32_t>()
+#define NP_FLOAT32  py::dtype::of<float_t>()
+#define NP_FLOAT64  py::dtype::of<double_t>()
 
 enum axisXYZ {
     X = 0,
@@ -65,7 +73,7 @@ enum frustumVectorIndex {
     BackTopLeft2BackTopRight = 7
 };
 
-template<typename T> 
+template<typename T>
 struct point_xyz {
     T x;
     T y;
@@ -93,28 +101,32 @@ void invert_transform(const Eigen::Matrix4f &in_matrix, Eigen::Matrix4f &out_mat
 void invert_transform(const Eigen::Vector3f &in_tr, const Eigen::Quaternionf &in_q, Eigen::Vector3f &out_tr, Eigen::Quaternionf &out_q);
 
 //  変換行列を逆変換する (for Python)
-np::ndarray invert_transform_matrix(const np::ndarray &matrix_4x4);
+template <typename T>
+py::array_t<float_t> invert_transform_matrix(const py::array_t<T> &matrix_4x4);
 
 //  並進ベクトルとクォータニオンを逆変換する (for Python)
-py::tuple invert_transform_quaternion(const np::ndarray &translation, const np::ndarray &quaternion);
+template <typename T>
+py::tuple invert_transform_quaternion(const py::array_t<T> &translation, const py::array_t<T> &quaternion);
 
 //  変換行列を並進ベクトルとクォータニオンに変換する
 void matrix2quaternion(const Eigen::Matrix4f &in_matrix, Eigen::Vector3f &out_translation, Eigen::Quaternionf &out_quaternion);
 
 //  変換行列を並進ベクトルとクォータニオンに変換する (for Python)
-py::tuple matrix2quaternion_python(const np::ndarray &matrix_4x4);
+template <typename T>
+py::tuple matrix2quaternion_python(const py::array_t<T> &matrix_4x4);
 
 //  並進ベクトルとクォータニオンを変換行列に変換する
 void quaternion2matrix(const Eigen::Vector3f &in_translation, const Eigen::Quaternionf &in_quaternion, Eigen::Matrix4f &out_matrix);
 
 //  並進ベクトルとクォータニオンを変換行列に変換する (for Python)
-np::ndarray quaternion2matrix_python(const np::ndarray &translation, const np::ndarray &quaternion);
+template <typename T>
+py::array_t<float_t> quaternion2matrix_python(const py::array_t<T> &translation, const py::array_t<T> &quaternion);
 
 //  cv::Matをnp::ndarrayへ変換する
-np::ndarray cvmat2ndarray(const cv::Mat& src);
+py::array cvmat2ndarray(const cv::Mat &src);
 
 //  np::ndarrayをcv::Matへ変換する
-void ndarray2cvmat(const np::ndarray &src, cv::Mat &dst);
+void ndarray2cvmat(const py::array &src, cv::Mat &dst);
 
 //  深度を用いてフィルタリングを行う
 void depth_filter(const pcl::PointCloud<pcl::PointXYZL> &src, pcl::PointCloud<pcl::PointXYZL> &dst, const float_t min, const float_t max);
@@ -129,34 +141,37 @@ void transform_pointcloud(const pcl::PointCloud<pcl::PointXYZL> &src, pcl::Point
 void depth2colormap(const cv::Mat &src, cv::Mat &dst, const float min, const float max, const int type, const bool invert);
 
 //  深度マップをカラーマップへ変換
-np::ndarray depth2colormap_python(const np::ndarray &src, const double_t min, const double_t max, const int type, const bool invert);
+py::array depth2colormap_python(const py::array &src, const double_t min, const double_t max, const int type, const bool invert);
 
 //  np::ndarrayをEigen::Vector3fへ変換
-void ndarray2translation(const np::ndarray &src, Eigen::Vector3f &dst);
+template <typename T>
+void ndarray2translation(const py::array_t<T> &src, Eigen::Vector3f &dst);
 
 //  np::ndarrayをEigen::Quaternionfへ変換
-void ndarray2quaternion(const np::ndarray &src, Eigen::Quaternionf &dst);
+template <typename T>
+void ndarray2quaternion(const py::array_t<T> &src, Eigen::Quaternionf &dst);
 
 //  np::ndarrayをEigen::Matrix4fへ変換
-void ndarray2matrix(const np::ndarray &src, Eigen::Matrix4f &dst);
+template <typename T>
+void ndarray2matrix(const py::array_t<T> &src, Eigen::Matrix4f &dst);
 
 //  Eigen::Vector3fをnp::ndarrayへ変換
-np::ndarray translation2ndarray(const Eigen::Vector3f &src);
+py::array_t<float_t> translation2ndarray(const Eigen::Vector3f &src);
 
 //  Eigen::Quaternionfをnp::ndarrayへ変換
-np::ndarray quaternion2ndarray(const Eigen::Quaternionf &src);
+py::array_t<float_t> quaternion2ndarray(const Eigen::Quaternionf &src);
 
 //  Eigen::Matrix4fをnp::ndarrayへ変換
-np::ndarray matrix2ndarray(const Eigen::Matrix4f &src);
+py::array_t<float_t> matrix2ndarray(const Eigen::Matrix4f &src);
 
 //  pcl::PointCloudをpoints型のnp::ndarrayへ変換
-np::ndarray pointcloud2nppoints(const pcl::PointCloud<pcl::PointXYZL> &src);
+py::array pointcloud2nppoints(const pcl::PointCloud<pcl::PointXYZL> &src);
 
 //  pcl::PointCloudをsemantic3d型のnp::ndarrayへ変換
 py::tuple pointcloud2npsemantic3d(const pcl::PointCloud<pcl::PointXYZL> &src);
 
 //  pcl::PointCloudをcompoundへ変換
-np::ndarray pointcloud2compound(const pcl::PointCloud<pcl::PointXYZL> &src, const bool label);
+py::array pointcloud2compound(const pcl::PointCloud<pcl::PointXYZL> &src, const bool label);
 
 //  points型のnp::ndarrayをpcl::PointCloudへ変換
 void nppoints2pointcloud(const np::ndarray &points, pcl::PointCloud<pcl::PointXYZL> &dst);
