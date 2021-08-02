@@ -44,6 +44,7 @@ BOOST_PYTHON_MODULE(libpointsmap)
         .def("set_semanticpoints", &PointsBase::set_semanticpoints_from_numpy)
         .def("get_points", &PointsBase::get_points_python)
         .def("get_semanticpoints", &PointsBase::get_semanticpoints_python)
+        .def("save_pcd", &PointsBase::save_pcd)
     ;
 
     py::class_<Depth, py::bases<DepthBase>, boost::shared_ptr<Depth> >("depth")

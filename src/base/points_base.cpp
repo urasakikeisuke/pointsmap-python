@@ -118,6 +118,17 @@ py::tuple PointsBase::get_semanticpoints_python()
     return pointcloud2npsemantic3d(tmp);
 }
 
+//  点群をpclファイルに保存する
+void PointsBase::save_pcd(const std::string &path)
+{
+    try {
+        pcl::io::savePCDFileBinary(path, this->_points);
+    }
+    catch (pcl::IOException &ex) {
+        std::cerr << "PCD write Error: " << ex.what() << std::endl;
+    }
+}
+
 //  点群の座標変換を行い，距離によるフィルタ処理を行う
 void PointsBase::transformPointCloud(const pcl::PointCloud<pcl::PointXYZL> &src, pcl::PointCloud<pcl::PointXYZL> &dst, const Eigen::Vector3f &translation, const Eigen::Quaternionf &quaternion, const bool filter)
 {

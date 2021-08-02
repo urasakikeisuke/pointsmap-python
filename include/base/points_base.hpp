@@ -35,6 +35,8 @@ class PointsBase : public DepthBase
         virtual np::ndarray get_points_python();
         //  格納された点群を取り出す
         virtual py::tuple get_semanticpoints_python();
+        //  点群をpclファイルに保存する
+        virtual void save_pcd(const std::string &path);
 
     protected:
         //  Properties
