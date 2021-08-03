@@ -121,8 +121,10 @@ py::tuple PointsBase::get_semanticpoints_python()
 //  点群をpclファイルに保存する
 void PointsBase::save_pcd(const std::string &path)
 {
+    pcl::PointCloud<pcl::PointXYZL> tmp;
+    this->get_points(tmp);
     try {
-        pcl::io::savePCDFileBinary(path, this->_points);
+        pcl::io::savePCDFileBinary(path, tmp);
     }
     catch (pcl::IOException &ex) {
         std::cerr << "PCD write Error: " << ex.what() << std::endl;
