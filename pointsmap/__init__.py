@@ -823,3 +823,15 @@ class VoxelGridMap():
         voxels (np.ndarray): voxels (Numpy(Z, Y, X) matrix containing compound(N,)['x', 'y', 'z', 'label'])
     """
     self.instance.set_voxels(indexs, voxels)
+
+  def downsampling(self, leaf_size:float) -> None:
+    """downsampling
+
+    Downsampling the stored point cloud using VoxelGridFilter.
+
+    Args:
+        leaf_size (float): Leaf Size (>0)
+    """
+    if leaf_size <= 0.0:
+      raise ValueError('"leaf_size" must be greater than 0.')
+    self.instance.downsampling(leaf_size)

@@ -1079,7 +1079,7 @@ void VoxelGridMap::create_semantic2d(const std::vector<point_xyz<size_t> > &voxe
         for (size_t i = 0ul; i < len; i++) {
             pcl::PointCloud<pcl::PointXYZL> points;
             this->transformPointCloud(this->_pointsmap_voxels[voxel_indexs[i].z][voxel_indexs[i].y][voxel_indexs[i].x].points, points, translation, quaternion, true);
-            
+
             size_t p_len = points.points.size();
 
             for (size_t p = 0; p < p_len; p++) {
@@ -1230,6 +1230,16 @@ void VoxelGridMap::create_semantic2d(const std::vector<point_xyz<size_t> > &voxe
                 }
             }
         }
+    }
+}
+
+//  ダウンサンプリングする
+void VoxelGridMap::downsampling(float_t leaf_size)
+{
+    for (size_t x = 0ul; x < this->_voxels_len.x; x++) for (size_t y = 0ul; y < this->_voxels_len.y; y++) for (size_t z = 0ul; z < this->_voxels_len.z; z++) {
+        pcl::PointCloud<pcl::PointXYZL> tmp;
+        this->voxelGridFilter(this->_pointsmap_voxels[z][y][x].points, tmp, leaf_size);
+        this->_pointsmap_voxels[z][y][x].points.swap(tmp);
     }
 }
 

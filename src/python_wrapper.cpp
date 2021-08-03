@@ -81,6 +81,7 @@ BOOST_PYTHON_MODULE(libpointsmap)
         .def("create_depthmap", &VoxelGridMap::create_depthmap_from_quaternion)
         .def("create_semantic2d", &VoxelGridMap::create_semantic2d_from_matrix)
         .def("create_semantic2d", &VoxelGridMap::create_semantic2d_from_quaternion)
+        .def("downsampling", &VoxelGridMap::downsampling)
     ;
 
     py::class_<Points, py::bases<PointsBase>, boost::shared_ptr<Points> >("points", py::no_init)

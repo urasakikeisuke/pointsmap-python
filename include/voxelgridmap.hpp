@@ -81,6 +81,8 @@ class VoxelGridMap : public PointsBase
         np::ndarray create_semantic2d_from_matrix(const np::ndarray &matrix_4x4, const int filter_radius = FILTER_RADIUS, const float_t filter_threshold = FILTER_THRESHOLD);
         //  並進ベクトルとクォータニオンからsemantic2dを生成する
         np::ndarray create_semantic2d_from_quaternion(const np::ndarray &translation, const np::ndarray &quaternion, const int filter_radius = FILTER_RADIUS, const float_t filter_threshold = FILTER_THRESHOLD);
+        //  ダウンサンプリングする
+        void downsampling(float_t leaf_size);
 
     protected:
         //  Properties
