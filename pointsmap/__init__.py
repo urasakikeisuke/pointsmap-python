@@ -620,6 +620,16 @@ class VoxelGridMap():
     """
     return self.instance.get_voxelgridmap(True)
 
+  def save_pcd(self, path: str) -> None:
+    """save_pcd
+
+    Save points as PCD file.
+
+    Args:
+        path (str): Output path.
+    """
+    self.instance.save_pcd(path)
+
   def get_voxel_size(self) -> float:
     """get_voxel_size
 
