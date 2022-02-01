@@ -21,6 +21,14 @@ Python3で点群地図を扱うライブラリ．
 Docker
 ------
 
+次のコマンドを実行して，既存のDockerイメージにpointsmap-pythonをインストールする．
+
+.. code-block:: bash
+
+    git clone https://github.com/shikishima-TasakiLab/pointsmap-python.git
+    cd pointsmap-python
+    ./installer/install-env-docker.sh -i BASE_IMAGE[:TAG]
+
 Local
 -----
 
