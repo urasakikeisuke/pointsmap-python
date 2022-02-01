@@ -2,7 +2,7 @@
 pointsmap-python
 ================
 
-Python3で点群地図を扱うライブラリ．
+Python3で点群地図を扱うライブラリ.
 
 依存
 ====
@@ -21,7 +21,7 @@ Python3で点群地図を扱うライブラリ．
 Docker
 ------
 
-次のコマンドを実行して，既存のDockerイメージにpointsmap-pythonをインストールする．
+次のコマンドを実行して, 既存のDockerイメージにpointsmap-pythonをインストールする.
 
 .. code-block:: bash
 
