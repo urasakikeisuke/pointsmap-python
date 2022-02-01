@@ -144,6 +144,8 @@ combineTransforms
 クラス
 ======
 
+.. _points_class:
+
 Points
 ------
 
@@ -622,7 +624,7 @@ create_depthmap
 
       pts.set_shape(h5file['data/0/rgb'].shape)
 
-      pts.set_pointsmap(h5file['map/points'][()])
+      pts.set_points(h5file['map/points'][()])
 
       translation = h5file['data/0/pose/rgb/translation'][()]
       quaternion = h5file['data/0/pose/rgb/rotation'][()]
@@ -696,7 +698,7 @@ create_semantic2d
 
       pts.set_shape(h5file['data/0/rgb'].shape)
 
-      pts.set_pointsmap(h5file['map/points'][()])
+      pts.set_points(h5file['map/points'][()])
 
       translation = h5file['data/0/pose/rgb/translation'][()]
       quaternion = h5file['data/0/pose/rgb/rotation'][()]
@@ -716,3 +718,197 @@ create_semantic2d
 
 VoxelGridMap
 ------------
+
+.. code-block:: python
+
+  from pointsmap import VoxelGridMap
+  vgm = VoxelGridMap(quiet: bool = False)
+
+三次元点群地図を扱うクラス.
+小規模な三次元点群を扱う場合は, :ref:`points_class` クラスを推奨.
+
+* Args:
+
+  * ``quiet (bool, optional)``: ``True``の場合, "ERROR", "WARNING"以外のメッセージをコンソールに表示しない. 初期値: ``False``
+
+set_pointsmap
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_pointsmap(path: str, voxel_size: float = 10.0) -> None:
+  def set_pointsmap(paths: List[str], voxel_size: float = 10.0) -> None:
+  def set_pointsmap(map: numpy.ndarray, voxel_size: float = 10.0) -> None:
+
+三次元地図を読み込む.
+ファイル(.pcd)のパスを指定することで, 直接読み込むことが可能.
+また, パスのリストを指定することで, 複数のファイルを一つの地図として読み込むことも可能.
+さらに, NumPyの三次元地図データを指定して読み込むことも可能.
+
+* Args:
+
+  * ``path (str)``: 三次元地図ファイル(.pcd)のパス
+  * ``paths (List[str])``: 三次元地図ファイル(.pcd)のパスのリスト
+  * ``map (numpy.ndarray)``: 三次元地図を格納したNumpy(N, 3)行列
+  * ``voxel_size (float, optional)``: Voxelのサイズ (初期値: ``10.0``)
+
+* 実装例:
+
+  .. code-block:: python
+
+    from pointsmap import VoxelGridMap
+
+    pcd_list = ['b.pcd', 'c.pcd', 'd.pcd']
+
+    vgm = VoxelGridMap()
+    vgm.set_pointsmap('a.pcd')
+    vgm.set_pointsmap(pcd_list)
+
+  .. code-block:: python
+
+    import h5py
+    from pointsmap import VoxelGridMap
+
+    vgm = VoxelGridMap()
+
+    with h5py.File('sample.hdf5', 'r') as h5file:
+      vgm.set_pointsmap(h5file['map/points'][()])
+
+set_semanticmap
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_semanticmap(
+    points: numpy.ndarray,
+    semantic1d: numpy.ndarray,
+    voxel_size: float = 10.0
+  ) -> None:
+
+ラベル付き三次元点群地図を読み込む．
+
+* Args:
+
+  * ``points (numpy.ndarray)``: ラベル付き三次元点群地図を構成する点群を格納したNumpy(N, 3)行列
+  * ``semantic1d (numpy.ndarray)``: 三次元点群地図のラベルを格納したNumpy(N,)行列
+  * ``voxel_size (float, optional)``: Voxelのサイズ (初期値: ``10.0``)
+
+set_voxelgridmap
+^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_voxelgridmap(
+    vgm: numpy.ndarray,
+    voxel_size: float,
+    voxels_min: Tuple[float, float, float],
+    voxels_max: Tuple[float, float, float],
+    voxels_center: Tuple[float, float, float],
+    voxels_origin: Tuple[int, int, int]
+  ) -> None:
+
+Voxel Gri Mapを読み込む.
+
+* Args:
+
+  * ``vgm (numpy.ndarray)``: Voxel Grid Map (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
+  * ``voxel_size (float, optional)``: Voxelのサイズ
+  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値 (z_min, y_min, x_min)
+  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値 (z_max, y_max, x_max)
+  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標 (z_center, y_center, x_center)
+  * ``voxels_origin (Tuple[int, int, int])``: Voxel Grid Mapの中心座標が含まれるVoxelのインデックス
+
+set_empty_voxelgridmap
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_empty_voxelgridmap(
+    voxels_len: Tuple[int, int, int],
+    voxel_size: float,
+    voxels_min: Tuple[float, float, float],
+    voxels_max: Tuple[float, float, float],
+    voxels_center: Tuple[float, float, float],
+    voxels_origin: Tuple[int, int, int]
+  ) -> None:
+
+空のVoxel Grid Mapを格納する.
+
+* Args:
+
+  * ``voxels_len (numpy.ndarray)``: Voxelの数 (各軸方向) (z_len, y_len, x_len)
+  * ``voxel_size (float, optional)``: Voxelのサイズ
+  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値 (z_min, y_min, x_min)
+  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値 (z_max, y_max, x_max)
+  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標 (z_center, y_center, x_center)
+  * ``voxels_origin (Tuple[int, int, int])``: Voxel Grid Mapの中心座標が含まれるVoxelのインデックス
+
+
+get_pointsmap
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_pointsmap() -> numpy.ndarray:
+
+三次元地図を取得する. ラベルも出力する場合は :ref:`get_semanticmap` を使用する.
+
+* Returns:
+
+  * ``numpy.ndarray``: 三次元地図 (Numpy(N, 3)行列)
+
+.. _get_semanticmap:
+
+get_semanticmap
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_semanticmap() -> Tuple[numpy.ndarray, numpy.ndarray]:
+
+ラベル付き三次元地図を取得する.
+
+* Returns:
+
+  * ``Tuple[numpy.ndarray, numpy.ndarray]``: 三次元地図 (Numpy(N, 3)行列)とラベル(Numpy(N,)行列) のTuple
+
+get_voxel_points
+^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxel_points() -> numpy.ndarray:
+
+Voxel Grid Mapを取得する. ラベルも出力する際は :ref:`get_voxel_semantic3d` を使用する.
+
+* Returns:
+
+  * ``numpy.ndarray``: Voxel Grid Map (Compound型(N,)['x','y','z']を格納したNumpy(Z, Y, X)行列)
+
+.. _get_voxel_semantic3d:
+
+get_voxel_semantic3d
+^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxel_semantic3d() -> numpy.ndarray:
+
+ラベル付きVoxel Grid Mapを取得する.
+
+* Returns:
+
+  * ``numpy.ndarray``: Voxel Grid Map (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
+
+save_pcd
+^^^^^^^^
+
+.. code-block:: python
+
+  def save_pcd(path: str) -> None:
+
+三次元点群地図をPCDファイルに保存する.
+
+* Args:
+
+  * ``path (str)``: 保存するPCDファイルのパス
