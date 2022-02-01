@@ -47,3 +47,12 @@ Local
         libopencv-dev
     pip install scikit-build cmake ninja
     pip install git+https://github.com/shikishima-TasakiLab/pointsmap-python
+
+使い方
+======
+
+.. toctree::
+    :maxdepth: 2
+    :glob:
+
+    *
