@@ -144,6 +144,232 @@ combineTransforms
 クラス
 ======
 
+Depth
+-----
+
+.. code-block:: python
+
+  from pointsmap import Depth
+  dpt = Depth()
+
+深度マップを扱うクラス.
+
+set_intrinsic
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_intrinsic(K: numpy.ndarray) -> None:
+
+3x3のカメラ内部パラメータを読み込む.
+
+* Args:
+
+  * ``K (numpy.ndarray)``: カメラ内部パラメータ
+
+get_intrinsic
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_intrinsic() -> numpy.ndarray:
+
+設定した3x3のカメラ内部パラメータを取得する.
+
+* Returns:
+
+  * ``numpy.ndarray``: カメラ内部パラメータ
+
+* 実装例:
+
+  .. code-block:: python
+
+    import numpy as np
+    from pointsmap import Depth
+
+    dpt = Depth()
+
+    K = numpy.array([
+        [319.6,   0. , 384.],   # [Fx,  0, Cx]
+        [  0. , 269.2, 192.],   # [ 0, Fy, Cy]
+        [  0. ,   0. ,   1.]    # [ 0,  0,  1]
+    ])
+
+    dpt.set_intrinsic(K)
+
+    print(dpt.get_intrinsic())
+
+* 出力例:
+
+  .. code-block::
+
+    [[ 319.6    0.   384. ]
+     [   0.   269.2  192. ]
+     [   0.     0.     1. ]]
+
+set_shape
+^^^^^^^^^
+
+.. code-block:: python
+
+  def set_shape(
+    shape: Tuple[int]
+  ) -> None:
+
+出力する画像のサイズを設定する.
+
+* Args:
+
+  * ``shape (Tuple[int])``: 画像サイズ (H, W)
+
+get_shape
+^^^^^^^^^
+
+.. code-block:: python
+
+  def get_shape() -> tuple:
+
+設定した画像サイズを読み出す.
+
+* Returns:
+
+  * ``Tuple[int]``: 画像サイズ (H, W)
+
+* 実装例:
+
+  .. code-block:: python
+
+    import numpy as np
+    import cv2
+    from pointsmap import Depth
+
+    dpt = Depth()
+
+    img = cv2.imread("test.png")
+
+    dpt.set_shape(img.shape)
+
+    print(dpt.get_shape())
+
+* 出力例:
+
+  .. code-block::
+
+    (256, 512)
+
+set_depth_range
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_depth_range(
+    depth_range: Tuple[float]
+  ) -> None:
+
+深度マップに描画する深度の範囲を設定する.
+
+* Args:
+
+  * ``depth_range (Tuple[float])``: 深度の範囲 (MIN, MAX)
+
+get_depth_range
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_depth_range() -> None:
+
+設定した深度の描画範囲を取得する.
+
+* Returns:
+
+  * ``tuple``: 深度の範囲 (MIN, MAX)
+
+* 実装例:
+
+  .. code-block:: python
+
+    from pointsmap import Depth
+
+    dpt = Depth()
+
+    print(dpt.get_depth_range())
+
+    dpt.set_depth_range((1.0, 100.0))   # (MIN, MAX)
+    print(dpt.get_depth_range())
+
+* 出力例:
+
+  .. code-block::
+
+    (0.0, inf)
+    (1.0, 100.0)
+
+set_base_line
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_base_line(base_line: float) -> None:
+
+ステレオカメラのベースラインを設定する.
+
+* Args:
+
+  * ``base_line (float)``: ステレオカメラのベースライン
+
+get_base_line
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_base_line() -> float:
+
+設定したステレオカメラのベースラインを取得する.
+
+* Returns:
+
+  * ``float``: ステレオカメラのベースライン
+
+set_depthmap
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_depthmap(depthmap: numpy.ndarray) -> None:
+
+深度マップを設定する.
+
+* Args:
+
+  * ``depthmap (numpy.ndarray)``: 深度マップ
+
+set_disparity
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_disparity(disparity: np.ndarray) -> None:
+
+視差マップを設定する. あらかじめ設定したベースラインを基に深度マップが生成される.
+
+* Args:
+
+  * ``disparity (numpy.ndarray)``: 視差マップ
+
+get_depthmap
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_depthmap() -> np.ndarray:
+
+深度マップを取得する.
+
+* Returns:
+
+  * ``depthmap (numpy.ndarray)``: 深度マップ
+
 .. _points_class:
 
 Points
