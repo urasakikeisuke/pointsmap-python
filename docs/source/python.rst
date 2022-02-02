@@ -155,11 +155,11 @@ Points
   pts = Points(quiet: bool = False)
 
 三次元点群を扱うクラス.
-大規模な三次元地図を扱う場合は, :ref:`vgm_class` クラスの方が高速.
+大規模な三次元点群地図を扱う場合は, :ref:`vgm_class` クラスの方が高速.
 
 * Args:
 
-  * ``quiet (bool, optional)``: ``True``の場合, "ERROR", "WARNING"以外のメッセージをコンソールに表示しない. 初期値: ``False``
+  * ``quiet (bool, optional)``: ``True`` の場合, "ERROR", "WARNING"以外のメッセージをコンソールに表示しない. 初期値: ``False``
 
 set_points
 ^^^^^^^^^^
@@ -729,7 +729,7 @@ VoxelGridMap
 
 * Args:
 
-  * ``quiet (bool, optional)``: ``True``の場合, "ERROR", "WARNING"以外のメッセージをコンソールに表示しない. 初期値: ``False``
+  * ``quiet (bool, optional)``: ``True`` の場合, "ERROR", "WARNING"以外のメッセージをコンソールに表示しない. 初期値: ``False``
 
 set_pointsmap
 ^^^^^^^^^^^^^
@@ -740,16 +740,16 @@ set_pointsmap
   def set_pointsmap(paths: List[str], voxel_size: float = 10.0) -> None:
   def set_pointsmap(map: numpy.ndarray, voxel_size: float = 10.0) -> None:
 
-三次元地図を読み込む.
+三次元点群地図を読み込む.
 ファイル(.pcd)のパスを指定することで, 直接読み込むことが可能.
 また, パスのリストを指定することで, 複数のファイルを一つの地図として読み込むことも可能.
-さらに, NumPyの三次元地図データを指定して読み込むことも可能.
+さらに, NumPyの三次元点群地図データを指定して読み込むことも可能.
 
 * Args:
 
-  * ``path (str)``: 三次元地図ファイル(.pcd)のパス
-  * ``paths (List[str])``: 三次元地図ファイル(.pcd)のパスのリスト
-  * ``map (numpy.ndarray)``: 三次元地図を格納したNumpy(N, 3)行列
+  * ``path (str)``: 三次元点群地図ファイル(.pcd)のパス
+  * ``paths (List[str])``: 三次元点群地図ファイル(.pcd)のパスのリスト
+  * ``map (numpy.ndarray)``: 三次元点群地図を格納したNumpy(N, 3)行列
   * ``voxel_size (float, optional)``: Voxelのサイズ (初期値: ``10.0``)
 
 * 実装例:
@@ -811,12 +811,22 @@ Voxel Gri Mapを読み込む.
 
 * Args:
 
-  * ``vgm (numpy.ndarray)``: Voxel Grid Map (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
+  * ``vgm (numpy.ndarray)``: Voxel Grid Map
+
+    (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
   * ``voxel_size (float, optional)``: Voxelのサイズ
-  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値 (z_min, y_min, x_min)
-  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値 (z_max, y_max, x_max)
-  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標 (z_center, y_center, x_center)
+  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値
+
+    (z_min, y_min, x_min)
+  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値
+
+    (z_max, y_max, x_max)
+  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標
+
+    (z_center, y_center, x_center)
   * ``voxels_origin (Tuple[int, int, int])``: Voxel Grid Mapの中心座標が含まれるVoxelのインデックス
+
+    (z_origin, y_origin, x_origin)
 
 set_empty_voxelgridmap
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -836,12 +846,22 @@ set_empty_voxelgridmap
 
 * Args:
 
-  * ``voxels_len (numpy.ndarray)``: Voxelの数 (各軸方向) (z_len, y_len, x_len)
+  * ``voxels_len (numpy.ndarray)``: Voxelの数 (各軸方向)
+
+    (z_len, y_len, x_len)
   * ``voxel_size (float, optional)``: Voxelのサイズ
-  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値 (z_min, y_min, x_min)
-  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値 (z_max, y_max, x_max)
-  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標 (z_center, y_center, x_center)
+  * ``voxel_min (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最小値
+
+    (z_min, y_min, x_min)
+  * ``voxel_max (Tuple[float, float, float])``: Voxel Grid Mapの範囲の最大値
+
+    (z_max, y_max, x_max)
+  * ``voxels_center (Tuple[float, float, float])``: Voxel Grid Mapの中心座標
+
+    (z_center, y_center, x_center)
   * ``voxels_origin (Tuple[int, int, int])``: Voxel Grid Mapの中心座標が含まれるVoxelのインデックス
+
+    (z_origin, y_origin, x_origin)
 
 
 get_pointsmap
@@ -851,11 +871,11 @@ get_pointsmap
 
   def get_pointsmap() -> numpy.ndarray:
 
-三次元地図を取得する. ラベルも出力する場合は :ref:`get_semanticmap` を使用する.
+三次元点群地図を取得する. ラベルも出力する場合は :ref:`get_semanticmap` を使用する.
 
 * Returns:
 
-  * ``numpy.ndarray``: 三次元地図 (Numpy(N, 3)行列)
+  * ``numpy.ndarray``: 三次元点群地図 (Numpy(N, 3)行列)
 
 .. _get_semanticmap:
 
@@ -866,11 +886,13 @@ get_semanticmap
 
   def get_semanticmap() -> Tuple[numpy.ndarray, numpy.ndarray]:
 
-ラベル付き三次元地図を取得する.
+ラベル付き三次元点群地図を取得する.
 
 * Returns:
 
-  * ``Tuple[numpy.ndarray, numpy.ndarray]``: 三次元地図 (Numpy(N, 3)行列)とラベル(Numpy(N,)行列) のTuple
+  * ``Tuple[numpy.ndarray, numpy.ndarray]``: 三次元点群地図
+
+    (Numpy(N, 3)行列)とラベル(Numpy(N,)行列) のTuple
 
 get_voxel_points
 ^^^^^^^^^^^^^^^^
@@ -883,7 +905,9 @@ Voxel Grid Mapを取得する. ラベルも出力する際は :ref:`get_voxel_se
 
 * Returns:
 
-  * ``numpy.ndarray``: Voxel Grid Map (Compound型(N,)['x','y','z']を格納したNumpy(Z, Y, X)行列)
+  * ``numpy.ndarray``: Voxel Grid Map
+
+    (Compound型(N,)['x','y','z']を格納したNumpy(Z, Y, X)行列)
 
 .. _get_voxel_semantic3d:
 
@@ -898,7 +922,9 @@ get_voxel_semantic3d
 
 * Returns:
 
-  * ``numpy.ndarray``: Voxel Grid Map (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
+  * ``numpy.ndarray``: Voxel Grid Map
+
+    (Compound型(N,)['x','y','z','label']を格納したNumpy(Z, Y, X)行列)
 
 save_pcd
 ^^^^^^^^
@@ -912,3 +938,407 @@ save_pcd
 * Args:
 
   * ``path (str)``: 保存するPCDファイルのパス
+
+get_voxel_size
+^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxel_size() -> float:
+
+Voxelのサイズを取得する.
+
+* Returns:
+
+  * ``float``: Voxelのサイズ
+
+get_voxels_min
+^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxels_min() -> Tuple[float, float, float]:
+
+Voxel Grid Mapの範囲の最小値を取得する.
+
+* Returns:
+
+  * ``Tuple[float, float, float]``: Voxel Grid Mapの範囲の最小値
+
+    (z_min, y_min, x_min)
+
+get_voxels_max
+^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxels_max() -> Tuple[float, float, float]:
+
+Voxel Grid Mapの範囲の最大値を取得する.
+
+* Returns:
+
+  * ``Tuple[float, float, float]``: Voxel Grid Mapの範囲の最小値
+
+    (z_max, y_max, x_max)
+
+get_voxels_center
+^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxels_center() -> Tuple[float, float, float]:
+
+Voxel Grid Mapの中心座標を取得する.
+
+* Returns:
+
+  * ``Tuple[float, float, float]``: Voxel Grid Mapの中心座標
+
+    (z_center, y_center, x_center)
+
+get_voxels_origin
+^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxels_origin() -> Tuple[int, int, int]:
+
+Voxel Grid Mapの中心座標が含まれるVoxelのインデックスを取得する.
+
+* Returns:
+
+  * ``Tuple[int, int, int]``: Voxel Grid Mapの中心座標が含まれるVoxelのインデックス
+
+    (z_origin, y_origin, x_origin)
+
+get_voxels_include_frustum
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_voxels_include_frustum(
+    translation: np.ndarray = None,
+    quaternion: np.ndarray = None,
+    matrix_4x4: np.ndarray = None
+  ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+同次変換行列, または並進ベクトルとクォータニオンを入力し, 画角内に含まれるVoxelのインデックスを取得する.
+
+* Args:
+
+  * ``translation (numpy.ndarray)``: 並進ベクトル [x y z]
+  * ``quaternion (numpy.ndarray)``: クォータニオン [x y z w]
+  * ``matrix_4x4 (numpy.ndarray)``: 変換行列
+
+    .. code-block::
+
+      [[r11 r12 r13 tx]
+       [r21 r22 r23 ty]
+       [r31 r32 r33 tz]
+       [  0   0   0  1]]
+
+* Returns:
+
+  * ``Tuple[np.ndarray, np.ndarray, np.ndarray]``: 画角内に含まれるVoxelのインデックス. (``numpy.where()`` と同様の出力)
+
+set_intrinsic
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_intrinsic(K: numpy.ndarray) -> None:
+
+3x3のカメラ内部パラメータを読み込む.
+
+* Args:
+
+  * ``K (numpy.ndarray)``: カメラ内部パラメータ
+
+get_intrinsic
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_intrinsic() -> numpy.ndarray:
+
+設定した3x3のカメラ内部パラメータを取得する.
+
+* Returns:
+
+  * ``numpy.ndarray``: カメラ内部パラメータ
+
+* 実装例:
+
+  .. code-block:: python
+
+    import numpy as np
+    from pointsmap import VoxelGridMap
+
+    vgm = VoxelGridMap()
+
+    K = numpy.array([
+        [319.6,   0. , 384.],   # [Fx,  0, Cx]
+        [  0. , 269.2, 192.],   # [ 0, Fy, Cy]
+        [  0. ,   0. ,   1.]    # [ 0,  0,  1]
+    ])
+
+    vgm.set_intrinsic(K)
+
+    print(vgm.get_intrinsic())
+
+* 出力例:
+
+  .. code-block::
+
+    [[ 319.6    0.   384. ]
+     [   0.   269.2  192. ]
+     [   0.     0.     1. ]]
+
+set_shape
+^^^^^^^^^
+
+.. code-block:: python
+
+  def set_shape(
+    shape: Tuple[int]
+  ) -> None:
+
+出力する画像のサイズを設定する.
+
+* Args:
+
+  * ``shape (Tuple[int])``: 画像サイズ (H, W)
+
+get_shape
+^^^^^^^^^
+
+.. code-block:: python
+
+  def get_shape() -> tuple:
+
+設定した画像サイズを読み出す.
+
+* Returns:
+
+  * ``Tuple[int]``: 画像サイズ (H, W)
+
+* 実装例:
+
+  .. code-block:: python
+
+    import numpy as np
+    import cv2
+    from pointsmap import VoxelGridMap
+
+    vgm = VoxelGridMap()
+
+    img = cv2.imread("test.png")
+
+    vgm.set_shape(img.shape)
+
+    print(vgm.get_shape())
+
+* 出力例:
+
+  .. code-block::
+
+    (256, 512)
+
+set_depth_range
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def set_depth_range(
+    depth_range: Tuple[float]
+  ) -> None:
+
+深度マップに描画する深度の範囲を設定する.
+
+* Args:
+
+  * ``depth_range (Tuple[float])``: 深度の範囲 (MIN, MAX)
+
+get_depth_range
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def get_depth_range() -> None:
+
+設定した深度の描画範囲を取得する.
+
+* Returns:
+
+  * ``tuple``: 深度の範囲 (MIN, MAX)
+
+* 実装例:
+
+  .. code-block:: python
+
+    from pointsmap import VoxelGridMap
+
+    vgm = VoxelGridMap()
+
+    print(vgm.get_depth_range())
+
+    vgm.set_depth_range((1.0, 100.0))   # (MIN, MAX)
+    print(vgm.get_depth_range())
+
+* 出力例:
+
+  .. code-block::
+
+    (0.0, inf)
+    (1.0, 100.0)
+
+create_depthmap
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def create_depthmap(
+    translation: numpy.ndarray = None,
+    quaternion: numpy.ndarray = None,
+    matrix_4x4: numpy.ndarray = None,
+    transform_mode: int = TransformMode.CHILD2PARENT,
+    filter_radius: int = 0,
+    filter_threshold: float = 3.0
+  ) -> numpy.ndarray:
+
+並進ベクトルとクォータニオン, または変換行列を用いてVoxel Grid Mapから深度マップを生成する.
+
+* Args:
+
+  * ``translation (numpy.ndarray)``: 並進ベクトル [x y z]
+  * ``quaternion (numpy.ndarray)``: クォータニオン [x y z w]
+  * ``matrix_4x4 (numpy.ndarray)``: 変換行列
+
+    .. code-block::
+
+      [[r11 r12 r13 tx]
+       [r21 r22 r23 ty]
+       [r31 r32 r33 tz]
+       [  0   0   0  1]]
+
+  * ``transform_mode (int, optional)``:
+
+    * :ref:`transformmode`.CHILD2PARENT (0)
+    * :ref:`transformmode`.PARENT2CHILD (1)
+
+  * ``filter_radius (int, optional)``: Visibility Filterのカーネル半径. 0 の場合, フィルタ処理を行わない. (既定値: ``0``)
+  * ``filter_threshold (float, optional)``: Visibility Filterの閾値. (既定値: ``3.0``)
+
+* Returns:
+
+  * ``numpy.ndarray``: 深度マップ
+
+* 実装例:
+
+  .. code-block:: python
+
+    import numpy as np
+    import h5py
+    import cv2
+    from pointsmap import *
+
+    vgm = VoxelGridMap()
+
+    with h5py.File('sample.hdf5', 'r') as h5file:
+      K = np.array([[h5file['K/rgb/Fx'][()], 0., h5file['K/rgb/Cx'][()]],
+                    [0., h5file['K/rgb/Fy'][()], h5file['K/rgb/Cy'][()]],
+                    [0., 0., 1.]])
+      vgm.set_intrinsic(K)
+
+      vgm.set_shape(h5file['data/0/rgb'].shape)
+
+      vgm.set_pointsmap(h5file['map/points'][()])
+
+      translation = h5file['data/0/pose/rgb/translation'][()]
+      quaternion = h5file['data/0/pose/rgb/rotation'][()]
+
+      map_depth = vgm.create_depthmap(
+        translation=translation,
+        quaternion=quaternion,
+        transform_mode=TransformMode.PARENT2CHILD)
+
+      map_depth_color = depth2colormap(map_depth, 0.0, 100.0)
+
+      cv2.imwrite('sample.png', map_depth_color)
+
+create_semantic2d
+^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  def create_semantic2d(
+    translation: numpy.ndarray = None,
+    quaternion: numpy.ndarray = None,
+    matrix_4x4: numpy.ndarray = None,
+    transform_mode: int = TransformMode.CHILD2PARENT,
+    filter_radius: int = 0,
+    filter_threshold: float = 3.0
+  ) -> numpy.ndarray:
+
+並進ベクトルとクォータニオン, または変換行列を用いてVoxel Grid MapのラベルからSemanticマップを生成する.
+
+* Args:
+
+  * ``translation (numpy.ndarray)``: 並進ベクトル [x y z]
+  * ``quaternion (numpy.ndarray)``: クォータニオン [x y z w]
+  * ``matrix_4x4 (numpy.ndarray)``: 変換行列
+
+    .. code-block::
+
+      [[r11 r12 r13 tx]
+       [r21 r22 r23 ty]
+       [r31 r32 r33 tz]
+       [  0   0   0  1]]
+
+  * ``transform_mode (int, optional)``:
+
+    * :ref:`transformmode`.CHILD2PARENT (0)
+    * :ref:`transformmode`.PARENT2CHILD (1)
+
+  * ``filter_radius (int, optional)``: Visibility Filterのカーネル半径. 0 の場合, フィルタ処理を行わない. (既定値: ``0``)
+  * ``filter_threshold (float, optional)``: Visibility Filterの閾値. (既定値: ``3.0``)
+
+* Returns:
+
+  * ``numpy.ndarray``: Semanticマップ
+
+* 実装例:
+
+.. code-block:: python
+
+  import numpy as np
+  import h5py
+  import cv2
+  from pointsmap import *
+
+  vgm = VoxelGridMap()
+
+  with h5py.File('sample.hdf5', 'r') as h5file:
+    K = np.array([[h5file['K/rgb/Fx'][()], 0., h5file['K/rgb/Cx'][()]],
+                  [0., h5file['K/rgb/Fy'][()], h5file['K/rgb/Cy'][()]],
+                  [0., 0., 1.]])
+    vgm.set_intrinsic(K)
+
+    vgm.set_shape(h5file['data/0/rgb'].shape)
+
+    vgm.set_pointsmap(h5file['map/points'][()])
+
+    translation = h5file['data/0/pose/rgb/translation'][()]
+    quaternion = h5file['data/0/pose/rgb/rotation'][()]
+
+    map_semantic2d = vgm.create_semantic2d(
+      translation=translation,
+      quaternion=quaternion,
+      transform_mode=TransformMode.PARENT2CHILD)
+
+    map_semantic2d_color = np.zeros(h5file['data/0/rgb'].shape, dtype=np.uint8)
+    for key, item in h5file['label/semantic2d'].items():
+        map_semantic2d_c[np.where(map_semantic2d == int(key))] = item['color'][()]
+
+    cv2.imwrite('sample.png', map_semantic2d_color)
