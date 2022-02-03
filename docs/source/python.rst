@@ -73,6 +73,64 @@ invertTransform
            [ 0.,  0.,  0.,  1.]])
     (array([ 197.72840881,    2.00151062,  -68.51225281]), array([-0.49215597,  0.5077244 , -0.50772268, -0.49215451]))
 
+matrix2quaternion
+-----------------
+
+.. code-block:: python
+
+  def matrix2quaternion(
+    matrix_4x4: np.ndarray
+  ) -> Tuple[np.ndarray, np.ndarray]:
+
+同次変換行列を並進ベクトル・クォータニオンへ変換する.
+
+* Args:
+
+  * ``matrix_4x4 (np.ndarray)``: 同次変換行列
+
+    .. code-block::
+
+      [[r11 r12 r13 tx]
+       [r21 r22 r23 ty]
+       [r31 r32 r33 tz]
+       [  0   0   0  1]]
+
+* Returns:
+
+  * ``Tuple[np.ndarray, np.ndarray]``: 並進ベクトルとクォータニオン
+
+    .. code-block::
+
+      ([tx, ty, tz], [qx, qy, qz, qw])
+
+quaternion2matrix
+-----------------
+
+.. code-block:: python
+
+  def quaternion2matrix(
+    translation: np.ndarray,
+    quaternion: np.ndarray
+  ) -> np.ndarray:
+
+並進ベクトル・クォータニオンを同次変換行列へ変換する.
+
+* Args:
+
+  * ``translation (np.ndarray)``: 並進ベクトル [tx, ty, tz]
+  * ``quaternion (np.ndarray)``: クォータニオン [qx, qy, qz, qw]
+
+* Returns:
+
+  * ``np.ndarray``: 同次変換行列
+
+    .. code-block::
+
+      [[r11 r12 r13 tx]
+       [r21 r22 r23 ty]
+       [r31 r32 r33 tz]
+       [  0   0   0  1]]
+
 depth2colormap
 --------------
 
