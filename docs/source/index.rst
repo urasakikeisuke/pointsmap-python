@@ -10,10 +10,10 @@ Python3で点群地図を扱うライブラリ.
 * Linux
 * CMake
 * Ninja-Build
-* Python 3.6<=
+* Python >=3.6
 * Numpy
-* OpenCV 3.2<=
-* Point Cloud Library 1.8<=
+* OpenCV >=3.2
+* Point Cloud Library >=1.8
 
 インストール
 ============
