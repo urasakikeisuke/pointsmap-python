@@ -79,14 +79,14 @@ matrix2quaternion
 .. code-block:: python
 
   def matrix2quaternion(
-    matrix_4x4: np.ndarray
-  ) -> Tuple[np.ndarray, np.ndarray]:
+    matrix_4x4: numpy.ndarray
+  ) -> Tuple[numpy.ndarray, numpy.ndarray]:
 
 同次変換行列を並進ベクトル・クォータニオンへ変換する.
 
 * Args:
 
-  * ``matrix_4x4 (np.ndarray)``: 同次変換行列
+  * ``matrix_4x4 (numpy.ndarray)``: 同次変換行列
 
     .. code-block::
 
@@ -97,7 +97,7 @@ matrix2quaternion
 
 * Returns:
 
-  * ``Tuple[np.ndarray, np.ndarray]``: 並進ベクトルとクォータニオン
+  * ``Tuple[numpy.ndarray, numpy.ndarray]``: 並進ベクトルとクォータニオン
 
     .. code-block::
 
@@ -109,20 +109,20 @@ quaternion2matrix
 .. code-block:: python
 
   def quaternion2matrix(
-    translation: np.ndarray,
-    quaternion: np.ndarray
-  ) -> np.ndarray:
+    translation: numpy.ndarray,
+    quaternion: numpy.ndarray
+  ) -> numpy.ndarray:
 
 並進ベクトル・クォータニオンを同次変換行列へ変換する.
 
 * Args:
 
-  * ``translation (np.ndarray)``: 並進ベクトル [tx, ty, tz]
-  * ``quaternion (np.ndarray)``: クォータニオン [qx, qy, qz, qw]
+  * ``translation (numpy.ndarray)``: 並進ベクトル [tx, ty, tz]
+  * ``quaternion (numpy.ndarray)``: クォータニオン [qx, qy, qz, qw]
 
 * Returns:
 
-  * ``np.ndarray``: 同次変換行列
+  * ``numpy.ndarray``: 同次変換行列
 
     .. code-block::
 
@@ -407,7 +407,7 @@ set_disparity
 
 .. code-block:: python
 
-  def set_disparity(disparity: np.ndarray) -> None:
+  def set_disparity(disparity: numpy.ndarray) -> None:
 
 視差マップを設定する. あらかじめ設定したベースラインを基に深度マップが生成される.
 
@@ -420,7 +420,7 @@ get_depthmap
 
 .. code-block:: python
 
-  def get_depthmap() -> np.ndarray:
+  def get_depthmap() -> numpy.ndarray:
 
 深度マップを取得する.
 
@@ -1302,10 +1302,10 @@ get_voxels_include_frustum
 .. code-block:: python
 
   def get_voxels_include_frustum(
-    translation: np.ndarray = None,
-    quaternion: np.ndarray = None,
-    matrix_4x4: np.ndarray = None
-  ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    translation: numpy.ndarray = None,
+    quaternion: numpy.ndarray = None,
+    matrix_4x4: numpy.ndarray = None
+  ) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]:
 
 同次変換行列, または並進ベクトルとクォータニオンを入力し, 画角内に含まれるVoxelのインデックスを取得する.
 
@@ -1324,7 +1324,7 @@ get_voxels_include_frustum
 
 * Returns:
 
-  * ``Tuple[np.ndarray, np.ndarray, np.ndarray]``: 画角内に含まれるVoxelのインデックス. (``numpy.where()`` と同様の出力)
+  * ``Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]``: 画角内に含まれるVoxelのインデックス. (``numpy.where()`` と同様の出力)
 
 set_intrinsic
 ^^^^^^^^^^^^^
