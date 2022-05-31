@@ -5,7 +5,7 @@ namespace pointsmap {
 Points::Points(bool quiet)
 :   PointsBase(quiet)
 {
-    //  pass
+    pcl::console::setVerbosityLevel(pcl::console::L_ERROR);
 }
 
 //  三次元点群地図を格納する

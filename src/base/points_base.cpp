@@ -6,6 +6,7 @@ namespace pointsmap {
 PointsBase::PointsBase(bool quiet)
 :   DepthBase()
 {
+    pcl::console::setVerbosityLevel(pcl::console::L_ERROR);
     this->_quiet = quiet;
 }
 
